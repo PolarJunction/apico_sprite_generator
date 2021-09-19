@@ -1,0 +1,100 @@
+:root {
+    --green: #00FF00;
+    --gray: #a0b1b6;
+    --white: #ffffff;
+    --black: #000000;
+}
+
+* {
+    color: var(--fontColor);
+    font-family: helvetica;
+}
+
+.light-theme {
+    --bg: var(--gray);
+    --fontColor: var(--black);
+    --btnBg: var(--black);
+    --btnFontColor: var(--white);
+}
+
+.button {
+    /* position: absolute; */
+    top: 20px;
+    left: 250px;
+    height: 30px;
+    width: 50px;
+    border-radius: 10%;
+    border: none;
+    color: var(--btnFontColor);
+    background-color: var(--btnBg);
+}
+
+.color {
+    /* position: absolute; */
+    /* top: 20px; */
+    /* left: 250px; */
+    height: 30px;
+    width: 30px;
+    margin: 10px 5px;
+    border-radius: 25%;
+}
+
+.highlight {
+    border: 2px solid white;
+}
+
+canvas {
+    width: 256px;
+    height: 288px;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.card {
+    border: solid 2px #000;
+    border-radius: 10px;
+    box-shadow: 1px 2px 10px #000;
+    background-color: #E9EEF2;
+    margin: auto;
+    display: inline-block;
+    /* width: 55%; */
+}
+
+.card-title {
+    padding: 5px;
+    color: #fff;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #2C6C73;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-photo {
+    background: #4b71b8;
+    border: solid 2px #000;
+    height: 288px;
+    width: 256px;
+    margin: 20px;
+}
+
+.pair {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.selectors {
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.stack {}
+
+.pair-item {
+    margin: auto;
+    padding: 10px;
+}
