@@ -7,6 +7,7 @@ const nxtHair = document.querySelector('.nextHair');
 const nxtEyes = document.querySelector('.nextEyes');
 const nxtHairCol = document.querySelector('.nextHairCol');
 
+
 var PALETTE = {
     'green': ['#33847e', '#43ad9c', '#77cab3', '#bde5d3'],
     'brown': ['#564457', '#765b69', '#95757e', '#a2868e'],
@@ -22,132 +23,57 @@ var paletteKeys = Object.keys(PALETTE);
 var spriteSheet = new Image();
 spriteSheet.src = "img/sprite_sheet.png";
 
-var curHead = 0;
-var curEyes = 0;
-var curPattern = 0;
-var curHair = 0;
-var curPattern = 0;
-
-var numHairs = 3;
-var numHeads = 4;
-var numEyes = 4;
-var numPatterns = 2;
-
-var curHairButton;
-var curShirtButton;
-var curPatternButton;
-
-var hairCol = paletteKeys[1];
-var shirtCol = paletteKeys[7];
-var patternCol = paletteKeys[1];
-
-
-nxtHead.addEventListener('click', function() {
-    if (++curHead >= numHeads) curHead = 0;
-    drawCanvas();
-});
-
-nxtShirt.addEventListener('click', function() {
-    if (++curPattern >= numPatterns) curPattern = 0;
-    drawCanvas();
-});
-
-nxtHair.addEventListener('click', function() {
-    if (++curHair >= numHairs) curHair = 0;
-    drawCanvas();
-});
-
-nxtEyes.addEventListener('click', function() {
-    if (++curEyes >= numEyes) curEyes = 0;
-    drawCanvas();
-});
-
-
-var hairRow = document.createElement('div');
-for (var key in PALETTE) {
-    var button = document.createElement('button');
-    button.className = 'color hairColor';
-    button.id = key;
-    button.name = PALETTE[key][0];
-    button.style.backgroundColor = PALETTE[key][1];
-    button.setAttribute('onclick', 'update(this)');
-
-    if (!curHairButton) {
-        curHairButton = button;
-        curHairButton.classList.add("highlight");
-    }
-
-    button.onclick = function() {
-        if (curHairButton) {
-            curHairButton.classList.remove("highlight");
-        }
-        this.classList.add("highlight");
-        curHairButton = this;
-
-        hairCol = this.id;
-        drawCanvas();
-    }
-
-    hairRow.appendChild(button);
-    document.getElementById('hairColButtons').appendChild(hairRow);
+var curButton = [];
+var curColor = { "hair": paletteKeys[1], "shirt": paletteKeys[7], "pattern": paletteKeys[1] };
+var totalSprites = {
+    "hair": 5,
+    "head": 4,
+    "eyes": 4,
+    "pattern": 2
 }
 
-var shirtRow = document.createElement('div');
-for (var key in PALETTE) {
-    var button = document.createElement('button');
-    button.className = 'color shirtColor';
-    button.id = key;
-    button.name = PALETTE[key][0];
-    button.style.backgroundColor = PALETTE[key][1];
-    button.setAttribute('onclick', 'update(this)');
+var curSel = { "hair": 0, "head": 0, "eyes": 0, "pattern": 0 }
 
-    if (!curShirtButton) {
-        curShirtButton = button;
-        curShirtButton.classList.add("highlight");
-    }
+/* Create the palette buttons for colour selection */
+createPaletteButtons(PALETTE, "hair", "hairColButtons");
+createPaletteButtons(PALETTE, "shirt", "shirtColButtons");
+createPaletteButtons(PALETTE, "pattern", "patternColButtons");
 
-    button.onclick = function() {
-        if (curShirtButton) {
-            curShirtButton.classList.remove("highlight");
-        }
-        this.classList.add("highlight");
-        curShirtButton = this;
+nxtHead.addEventListener('click', () => inc("head"));
+nxtShirt.addEventListener('click', () => inc("pattern"));
+nxtHair.addEventListener('click', () => inc("hair"));
+nxtEyes.addEventListener('click', () => inc("eyes"));
 
-        shirtCol = this.id;
-        drawCanvas();
-    }
-
-    shirtRow.appendChild(button);
-    document.getElementById('shirtColButtons').appendChild(shirtRow);
+function inc(className) {
+    if (++curSel[className] >= totalSprites[className]) curSel[className] = 0;
+    drawCanvas();
 }
 
-var patternRow = document.createElement('div');
-for (var key in PALETTE) {
-    var button = document.createElement('button');
-    button.className = 'color patternColor';
-    button.id = key;
-    button.name = PALETTE[key][0];
-    button.style.backgroundColor = PALETTE[key][1];
-    button.setAttribute('onclick', 'update(this)');
+function createPaletteButtons(palette, buttonClass, divClass) {
+    for (var key in palette) {
+        var button = document.createElement('button');
+        button.className = ("color " + buttonClass);
+        button.id = key;
+        button.style.backgroundColor = palette[key][1];
 
-    if (!curPatternButton) {
-        curPatternButton = button;
-        curPatternButton.classList.add("highlight");
-    }
-
-    button.onclick = function() {
-        if (curPatternButton) {
-            curPatternButton.classList.remove("highlight");
+        if (!curButton[buttonClass] && (curColor[buttonClass] == key)) {
+            curButton[buttonClass] = button;
+            curButton[buttonClass].classList.add("highlight");
         }
-        this.classList.add("highlight");
-        curPatternButton = this;
 
-        patternCol = this.id;
-        drawCanvas();
+        button.onclick = function() {
+            if (curButton[buttonClass]) {
+                curButton[buttonClass].classList.remove("highlight");
+            }
+            this.classList.add("highlight");
+            curButton[buttonClass] = this;
+            curColor[buttonClass] = this.id;
+
+            drawCanvas();
+        }
+
+        document.getElementById(divClass).appendChild(button);
     }
-
-    patternRow.appendChild(button);
-    document.getElementById('patternColButtons').appendChild(patternRow);
 }
 
 function genColourSprite(sprite, dw, dh, w, h, palette, frames) {
@@ -188,11 +114,11 @@ function drawCanvas() {
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(genColourSprite(spriteSheet, 448, 0, 32, 32, PALETTE[shirtCol], 3), 0, 4);
-    ctx.drawImage(genColourSprite(spriteSheet, 576, 0 + (curPattern * 32), 32, 32, PALETTE[patternCol], 4), 0, 4);
-    ctx.drawImage(spriteSheet, 192 + (curHead * 32), 0, 32, 32, 0, 4, 32, 32);
-    ctx.drawImage(spriteSheet, 320 + (curEyes * 32), 0, 32, 32, 0, 4, 32, 32);
-    ctx.drawImage(genColourSprite(spriteSheet, 0, 0 + (curHair * 32), 32, 32, PALETTE[hairCol], 5), 0, 0);
+    ctx.drawImage(genColourSprite(spriteSheet, 448, 0, 32, 32, PALETTE[curColor["shirt"]], 3), 0, 4);
+    ctx.drawImage(genColourSprite(spriteSheet, 576, 0 + (curSel["pattern"] * 32), 32, 32, PALETTE[curColor["pattern"]], 4), 0, 4);
+    ctx.drawImage(spriteSheet, 192 + (curSel["head"] * 32), 0, 32, 32, 0, 4, 32, 32);
+    ctx.drawImage(spriteSheet, 320 + (curSel["eyes"] * 32), 0, 32, 32, 0, 4, 32, 32);
+    ctx.drawImage(genColourSprite(spriteSheet, 0, 0 + (curSel["hair"] * 32), 32, 32, PALETTE[curColor["hair"]], 5), 0, 0);
 }
 
 spriteSheet.onload = function() {
