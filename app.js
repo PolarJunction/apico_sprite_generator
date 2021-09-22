@@ -29,7 +29,7 @@ var totalSprites = {
     "hair": 5,
     "head": 4,
     "eyes": 4,
-    "pattern": 2
+    "pattern": 3
 }
 
 var curSel = { "hair": 0, "head": 0, "eyes": 0, "pattern": 0 }
@@ -114,8 +114,8 @@ function drawCanvas() {
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(genColourSprite(spriteSheet, 448, 0, 32, 32, PALETTE[curColor["shirt"]], 3), 0, 4);
-    ctx.drawImage(genColourSprite(spriteSheet, 576, 0 + (curSel["pattern"] * 32), 32, 32, PALETTE[curColor["pattern"]], 4), 0, 4);
+    ctx.drawImage(genColourSprite(spriteSheet, 448, 0, 32, 32, PALETTE[curColor["shirt"]], 4), 0, 4);
+    ctx.drawImage(genColourSprite(spriteSheet, 608, 0 + (curSel["pattern"] * 32), 32, 32, PALETTE[curColor["pattern"]], 4), 0, 4);
     ctx.drawImage(spriteSheet, 192 + (curSel["head"] * 32), 0, 32, 32, 0, 4, 32, 32);
     ctx.drawImage(spriteSheet, 320 + (curSel["eyes"] * 32), 0, 32, 32, 0, 4, 32, 32);
     ctx.drawImage(genColourSprite(spriteSheet, 0, 0 + (curSel["hair"] * 32), 32, 32, PALETTE[curColor["hair"]], 5), 0, 0);
