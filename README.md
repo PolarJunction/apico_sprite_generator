@@ -24,3 +24,6 @@ Project Link: [https://github.com/PolarJunction/Apico_Sprite_Generator](https://
 
 * [APICO](http://apico.buzz/)
 * [TNGINEERS](https://twitter.com/TNgineers)
+
+## License
+Distributed under the MIT License. See `LICENSE` for more information.
