@@ -121,6 +121,22 @@ function drawCanvas() {
     ctx.drawImage(genColourSprite(spriteSheet, 0, 0 + (curSel["hair"] * 32), 32, 32, PALETTE[curColor["hair"]], 5), 0, 0);
 }
 
+/* 64 x 36 Bust Sprite */
+function drawBustSprite() {
+    var bustCanvas = document.getElementById("npcBust");
+    var canvas = document.getElementById("npcBustSpr");
+    var ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bustCanvas, 0, 0);
+    ctx.drawImage(bustCanvas, 32, 0);
+}
+
+
+
 spriteSheet.onload = function() {
     drawCanvas();
+    drawBustSprite();
 }
+
+
